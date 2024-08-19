@@ -22,6 +22,14 @@ function Sidebar() {
       >
         <Link to="/Chat">New Chat</Link>
       </div>
+
+      <div
+        className={`mt-2 ${
+          theme === "light" ? "hover:bg-[#e0e0e0]" : "hover:bg-[#353535]"
+        }  p-1.5 rounded-md`}
+      >
+        <Link to="/Chat">Chat History</Link>
+      </div>
     </div>
   );
 }

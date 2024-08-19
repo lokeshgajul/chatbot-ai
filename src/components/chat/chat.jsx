@@ -1,20 +1,19 @@
 import React, { useContext, useState } from "react";
 import { LuSendHorizonal } from "react-icons/lu";
 import { RotatingLines } from "react-loader-spinner";
-import "./chat.css";
 import axios from "axios";
+import "./chat.css";
 import { ThemeContext } from "../../Context/ThemeContext";
 
 const Chat = () => {
   const [response, setResponse] = useState("");
-  const [searchText, SetSearchText] = useState("");
+  const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { theme } = useContext(ThemeContext);
 
   const handleSearchText = (e) => {
-    SetSearchText(e.target.value);
-    console.log(e.target.value);
+    setText(e.target.value);
   };
 
   // const handleApiRequest = async () => {
@@ -63,28 +62,26 @@ const Chat = () => {
   // };
 
   const handleSubmit = async () => {
-    const prompt = searchText;
+    const message = text;
+
     try {
-      const res = await axios.post("http://localhost:3000/getPrompt", {
-        prompt,
+      const res = await axios.post("http://localhost:3000/startChat", {
+        message,
       });
+
+      console.log("request body ", message);
 
       if (res.status === 200) {
         const data = res.data.response;
-        console.log(res.data.response);
-
-        const generatedText =
-          data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-
-        // Set the response text to be displayed in the textarea
-        setResponse(generatedText);
+        console.log(data);
+        setResponse(res.data.response);
+        setText("");
       }
     } catch (error) {
       console.error("Error: ", error);
-    } finally {
-      SetSearchText("");
     }
   };
+
   return (
     <div>
       <h2 className="text-center text-2xl uppercase font-semibold tracking-wider">
@@ -100,7 +97,7 @@ const Chat = () => {
             value={response}
             readOnly // This makes the textarea read-only
             className={`w-[60%] text-[14px] h-80 p-3  rounded-sm ${
-              theme === "dark" ? "bg-[#2f2f2f]" : "bg-[#F0F0F0]"
+              theme === "dark" ? "bg-[#212121]" : "bg-[#F0F0F0]"
             }  focus:outline-none  overflow-y-scroll scrollbar-hide `}
           ></textarea>
         </div>
@@ -117,6 +114,7 @@ const Chat = () => {
                 type="text"
                 placeholder="Enter Prompt"
                 onChange={handleSearchText}
+                value={text}
                 className={` p-1 ml-3 rounded-2xl ${
                   theme === "dark" ? "bg-[#2f2f2f]" : "bg-[#F0F0F0]"
                 } w-full focus:outline-none `}

@@ -1,18 +1,20 @@
 import React, { useContext, useState } from "react";
 import { LuSendHorizonal } from "react-icons/lu";
 import { RotatingLines } from "react-loader-spinner";
+
 import axios from "axios";
 import { ThemeContext } from "../../Context/ThemeContext";
 
 const QA = () => {
   const [response, setResponse] = useState("");
-  const [text, setText] = useState("");
+  const [searchText, SetSearchText] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { theme } = useContext(ThemeContext);
 
   const handleSearchText = (e) => {
-    setText(e.target.value);
+    SetSearchText(e.target.value);
+    console.log(e.target.value);
   };
 
   // const handleApiRequest = async () => {
@@ -61,25 +63,27 @@ const QA = () => {
   // };
 
   const handleSubmit = async () => {
-    const message = text; // Assuming you have a variable named 'message'
+    const prompt = searchText;
     try {
-      const res = await axios.post("http://localhost:3000/startChat", {
-        message, // Send 'text' as expected by the server
+      const res = await axios.post("http://localhost:3000/getPrompt", {
+        prompt,
       });
 
       if (res.status === 200) {
         const data = res.data.response;
-        console.log(data);
+        console.log(res.data.response);
 
-        // Set the response text to be displayed in the textarea
+        const generatedText =
+          data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+        setResponse(generatedText);
       }
     } catch (error) {
       console.error("Error: ", error);
     } finally {
-      setText("");
+      SetSearchText("");
     }
   };
-
   return (
     <div>
       <h2 className="text-center text-2xl uppercase font-semibold tracking-wider">
@@ -92,7 +96,7 @@ const QA = () => {
             name="chat"
             id="chat"
             placeholder="Generated Text"
-            // value={response}
+            value={response}
             readOnly // This makes the textarea read-only
             className={`w-[60%] text-[14px] h-80 p-3  rounded-sm ${
               theme === "dark" ? "bg-[#2f2f2f]" : "bg-[#F0F0F0]"

@@ -1,6 +1,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from "dotenv";
 
-const genAi = new GoogleGenerativeAI("AIzaSyDtHtKuKYDzlJ9R5tH_rcmbMrTtWwoxoho");
+dotenv.config({ path: "../.env" });
+
+const apiKey = process.env.API_KEY;
+
+const genAi = new GoogleGenerativeAI(apiKey);
 
 const model = genAi.getGenerativeModel({
   model: "gemini-1.5-flash",
@@ -23,6 +28,7 @@ export const getContent = async (req, res) => {
 
 export const getStartChat = async (req, res) => {
   const { message } = req.body;
+
   try {
     const chat = model.startChat({
       history: [
@@ -36,10 +42,17 @@ export const getStartChat = async (req, res) => {
         },
       ],
     });
-    let result = await chat.sendMessage("I have 2 dogs in my house.");
-    console.log(result.response.text());
-    result = await chat.sendMessage("How many paws are in my house?");
-    console.log(result.response.text());
+
+    // Send the user's message to the model
+    let result = await chat.sendMessage(message.toString());
+
+    console.log("message ", message);
+    console.log("response", result.response);
+
+    // result = await chat.sendMessage("How many paws are in my house?");
+    // console.log("response", result.response.text());
+
+    res.status(200).send({ response: result.response.text() });
   } catch (error) {
     console.error("Error: ", error);
     res.status(500).send({ error: "Failed to start chat" });
