@@ -1,11 +1,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 
-dotenv.config({ path: "../.env" });
+// dotenv.config({ path: "./../../" });
 
-const apiKey = process.env.API_KEY;
+// const apiKey = process.env.API_KEY;
 
-const genAi = new GoogleGenerativeAI(apiKey);
+const genAi = new GoogleGenerativeAI("AIzaSyDtHtKuKYDzlJ9R5tH_rcmbMrTtWwoxoho");
 
 const model = genAi.getGenerativeModel({
   model: "gemini-1.5-flash",
@@ -28,6 +28,7 @@ export const getContent = async (req, res) => {
 
 export const getStartChat = async (req, res) => {
   const { message } = req.body;
+  const chatHistory = [];
 
   try {
     const chat = model.startChat({
@@ -40,19 +41,28 @@ export const getStartChat = async (req, res) => {
           role: "model",
           parts: [{ text: "Great to meet you. What would you like to know?" }],
         },
+        ...chatHistory.map((item) => ({
+          role: item.role,
+          parts: [{ text: item.parts.map((part) => part.text).join(" ") }],
+        })),
       ],
     });
 
     // Send the user's message to the model
     let result = await chat.sendMessage(message.toString());
 
-    console.log("message ", message);
-    console.log("response", result.response);
+    chatHistory.push({ role: "user", parts: [{ text: message }] });
 
-    // result = await chat.sendMessage("How many paws are in my house?");
-    // console.log("response", result.response.text());
+    chatHistory.push({
+      role: "model",
+      parts: [{ text: result.response.text() }],
+    });
 
-    res.status(200).send({ response: result.response.text() });
+    console.log(chatHistory);
+
+    res
+      .status(200)
+      .send({ response: result.response.text(), chatHistory: chatHistory });
   } catch (error) {
     console.error("Error: ", error);
     res.status(500).send({ error: "Failed to start chat" });

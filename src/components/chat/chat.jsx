@@ -9,6 +9,7 @@ const Chat = () => {
   const [response, setResponse] = useState("");
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState([]);
 
   const { theme } = useContext(ThemeContext);
 
@@ -75,6 +76,9 @@ const Chat = () => {
         const data = res.data.response;
         console.log(data);
         setResponse(res.data.response);
+        setHistory(res.data.chatHistory);
+        console.log("history", res.data.chatHistory);
+
         setText("");
       }
     } catch (error) {
@@ -138,6 +142,26 @@ const Chat = () => {
               </button>
             </div>
           </div>
+        </div>
+
+        <div>
+          {history && history.length > 0 ? (
+            history.map((item, index) => (
+              <div key={index}>
+                <p className="text-white">role: {item.role}</p>
+                <p className="text-white">
+                  text:{" "}
+                  {typeof item.parts[0].text === "string"
+                    ? item.parts[0].text
+                    : JSON.stringify(item.parts[0].text)}
+                </p>
+              </div>
+            ))
+          ) : (
+            <div>
+              <p className="text-white">No history available</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
