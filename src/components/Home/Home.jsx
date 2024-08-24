@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
-import { MdDarkMode } from "react-icons/md";
 import { ThemeContext } from "../../Context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-  const { toggleTheme, theme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
 
@@ -15,14 +14,20 @@ const Index = () => {
   return (
     <div className={` `}>
       <div className=" flex items-center flex-col">
-        <h2 className="text-center mt-8 text-2xl uppercase font-semibold tracking-normal">
+        <h2
+          className={` text-center mt-8 text-2xl uppercase font-semibold tracking-normal ${
+            theme == "dark" && "text-white"
+          } `}
+        >
           Get Started
         </h2>
 
         <div className="flex flex-wrap justify-center items-center  mt-16">
           <div
             className={`border-[1px] border-slate-500 p-4 rounded-md m-3 cursor-pointer ${
-              theme === "light" ? "hover:bg-[#f2f2f2]" : "hover:bg-[#2b2b2b]"
+              theme === "light"
+                ? "hover:bg-[#f2f2f2] text-black"
+                : "hover:bg-[#2b2b2b] text-white"
             }  hover:shadow-md`}
           >
             <h3 className="text-[18px] font-medium tracking-wide capitalize">
@@ -36,7 +41,9 @@ const Index = () => {
           <div
             onClick={() => navigate("/Qa")}
             className={`border-[1px] border-slate-500 p-4 rounded-md m-3 cursor-pointer hover:shadow-md ${
-              theme === "light" ? "hover:bg-[#f2f2f2]" : "hover:bg-[#2b2b2b]"
+              theme === "light"
+                ? "hover:bg-[#f2f2f2]  text-black"
+                : "hover:bg-[#2b2b2b] text-white"
             } `}
           >
             <h3 className="text-[18px] font-medium tracking-wide capitalize">
@@ -50,7 +57,9 @@ const Index = () => {
           <div
             onClick={handleClick}
             className={`border-[1px] border-slate-500 p-4 rounded-md m-3 cursor-pointer hover:shadow-md ${
-              theme === "light" ? "hover:bg-[#f2f2f2]" : "hover:bg-[#2b2b2b]"
+              theme === "light"
+                ? "hover:bg-[#f2f2f2] text-black"
+                : "hover:bg-[#2b2b2b] text-white"
             } `}
           >
             <h3 className="text-[18px] font-medium tracking-wide capitalize">
@@ -63,7 +72,9 @@ const Index = () => {
 
           <div
             className={`border-[1px] border-slate-500 p-4 rounded-md m-3 cursor-pointer hover:shadow-md ${
-              theme === "light" ? "hover:bg-[#f2f2f2]" : "hover:bg-[#2b2b2b]"
+              theme === "light"
+                ? "hover:bg-[#f2f2f2] text-black"
+                : "hover:bg-[#2b2b2b] text-white"
             } `}
           >
             <h3 className="text-[18px] font-medium tracking-wide capitalize">

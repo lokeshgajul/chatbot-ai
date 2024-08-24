@@ -12,7 +12,9 @@ function Sidebar() {
         theme === "light" ? "bg-[#f5f5f5]" : "bg-[#171717]"
       }  min-h-screen pl-3 pr-3 pt-4  `}
     >
-      <h1>ConversAI</h1>
+      <h1 className={`${theme === "dark" ? "text-white" : "text-black"}`}>
+        ConversAI
+      </h1>
       {/* Add additional sidebar content or links here */}
 
       <div
@@ -20,7 +22,12 @@ function Sidebar() {
           theme === "light" ? "hover:bg-[#e0e0e0]" : "hover:bg-[#353535]"
         }  p-1.5 rounded-md`}
       >
-        <Link to="/Chat">New Chat</Link>
+        <Link
+          to="/Chat"
+          className={`${theme === "dark" ? "text-white" : "text-black"}`}
+        >
+          New Chat
+        </Link>
       </div>
 
       <div
@@ -28,7 +35,12 @@ function Sidebar() {
           theme === "light" ? "hover:bg-[#e0e0e0]" : "hover:bg-[#353535]"
         }  p-1.5 rounded-md`}
       >
-        <Link to="/Chat">Chat History</Link>
+        <Link
+          to="/Chat"
+          className={`${theme === "dark" ? "text-white" : "text-black"}`}
+        >
+          Chat History
+        </Link>
       </div>
     </div>
   );

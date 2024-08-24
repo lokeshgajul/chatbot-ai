@@ -1,57 +1,72 @@
-import axios from "axios";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Authhook from "../../Context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const baseUrl = "http://localhost:3000";
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const registerUser = async (e) => {
-    e.preventDefault();
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    username,
+    setUsername,
+    error,
+    registerUser,
+  } = Authhook();
 
-    try {
-      const response = await axios.post(
-        `${baseUrl}/register`,
-        {
-          username: username,
-          email: email,
-          password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const data = response.data;
-
-      if (data.response) {
-        alert("User registered successfully");
-      } else {
-        console.log("Unexpected response format:", data);
-      }
-    } catch (error) {
-      console.log("Error:", error);
-      if (error.response && error.response.data) {
-        setError(error.response.data.message);
-      } else {
-        setError("An unexpected error occurred");
-      }
-    } finally {
-      setError("");
-      setEmail("");
-      setPassword("");
-      setUsername("");
-    }
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    await registerUser();
+    navigate("/login");
   };
+  // const registerUser = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${baseUrl}/register`,
+  //       {
+  //         username: username,
+  //         email: email,
+  //         password: password,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+
+  //     const data = response.data;
+
+  //     if (data.response) {
+  //       alert("User registered successfully");
+  //       console.log("user credentials ", data.response.token);
+  //       localStorage.setItem("userToken", data.response.token);
+  //       navigate("/login");
+  //     } else {
+  //       console.log("Unexpected response format:", data);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error:", error);
+  //     if (error.response && error.response.data) {
+  //       setError(error.response.data.message);
+  //     } else {
+  //       setError("An unexpected error occurred");
+  //     }
+  //   } finally {
+  //     setError("");
+  //     setEmail("");
+  //     setPassword("");
+  //     setUsername("");
+  //   }
+  // };
 
   return (
-    <form onSubmit={registerUser}>
+    <form onSubmit={handleRegister}>
       <div className="">
         <div className="m-4">
           <h2 className="font-bold tracking-wider text-left">Converse AI</h2>
@@ -96,6 +111,7 @@ function Register() {
               />
             </div>
             <div className="w-full mt-4">
+              <ToastContainer />
               <button
                 type="submit"
                 className="py-2 bg-black w-full rounded text-blue-50 font-bold hover:bg-blue-700"

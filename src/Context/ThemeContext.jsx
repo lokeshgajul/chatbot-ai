@@ -26,7 +26,7 @@ export const ThemeProvder = ({ children }) => {
       document.body.style.backgroundColor = "#e3e3e3";
       document.body.style.color = "black";
     } else {
-      // document.body.style.backgroundColor = "#212121";
+      document.body.style.backgroundColor = "#212121";
     }
   }, [theme]);
 
