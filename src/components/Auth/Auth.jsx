@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 import Header from "../Header/Header";
@@ -11,10 +11,22 @@ import QA from "../QA/Qa";
 import Authhook from "../../Context/AuthContext";
 
 const Auth = () => {
-  const { auth } = Authhook();
+  const { token } = Authhook();
+  const [authToken, setAuthToken] = useState();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const getToken = localStorage.getItem("authToken");
+    setAuthToken(getToken);
+    setLoading(false);
+  }, [token]);
+
   return (
     <BrowserRouter>
-      {auth ? (
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <p>Loading....</p>
+        </div>
+      ) : authToken ? (
         <div className="flex min-h-screen">
           <Sidebar />
           <div className="flex-grow">
@@ -30,8 +42,8 @@ const Auth = () => {
         </div>
       ) : (
         <Routes>
-          <Route path="/" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Login />} />
         </Routes>
       )}
     </BrowserRouter>

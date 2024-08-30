@@ -4,7 +4,11 @@ import express from "express";
 import cors from "cors";
 import { getContent, getStartChat } from "./Controllers/ChatController.js";
 import { ConnectDb } from "./Db/Db.js";
-import { loginUser, registerUser } from "./Controllers/AuthController.js";
+import {
+  loginUser,
+  registerUser,
+  VerifyUser,
+} from "./Controllers/AuthController.js";
 import cookieParser from "cookie-parser";
 
 const app = express();
@@ -30,6 +34,8 @@ app.post("/startChat", getStartChat);
 app.post("/register", registerUser);
 
 app.post("/login", loginUser);
+
+app.post("/VerifyUser", VerifyUser);
 
 app.listen(3000, () => {
   console.log(`Server is running on port 3000`);

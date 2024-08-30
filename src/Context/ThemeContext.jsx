@@ -4,34 +4,30 @@ export const ThemeContext = createContext();
 
 export const ThemeProvder = ({ children }) => {
   const [theme, setTheme] = useState("dark");
-  const changeTheme = (value) => {
-    setTheme(value);
-    console.log("theme ", value);
-  };
 
   const toggleTheme = () => {
-    if (theme === "light") {
-      setTheme("dark");
-      document.body.style.backgroundColor = "#212121";
-      document.body.style.color = "#fff";
-    } else {
-      setTheme("light");
-      document.body.style.backgroundColor = "#e3e3e3";
-      document.body.style.color = "black";
-    }
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    console.log("newtheme", newTheme);
+
+    document.body.style.backgroundColor =
+      newTheme === "light" ? "#e3e3e3" : "#212121";
+    document.body.style.color = newTheme === "dark" && "#ffff";
+
+    localStorage.setItem("theme", newTheme);
   };
 
   useEffect(() => {
-    if (theme === "light") {
-      document.body.style.backgroundColor = "#e3e3e3";
-      document.body.style.color = "black";
-    } else {
-      document.body.style.backgroundColor = "#212121";
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setTheme(storedTheme);
+      document.body.style.backgroundColor =
+        storedTheme === "light" ? "#e3e3e3" : "#212121";
+      document.body.style.color = storedTheme === "light" ? "black" : "#fff";
     }
   }, [theme]);
 
   const value = {
-    changeTheme,
     toggleTheme,
     theme,
     setTheme,

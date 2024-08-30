@@ -24,7 +24,9 @@ function Sidebar() {
       >
         <Link
           to="/Chat"
-          className={`${theme === "dark" ? "text-white" : "text-black"}`}
+          className={`${
+            theme === "dark" ? "text-white" : "text-black"
+          } text-[14px] tracking-wider`}
         >
           New Chat
         </Link>
@@ -37,7 +39,9 @@ function Sidebar() {
       >
         <Link
           to="/Chat"
-          className={`${theme === "dark" ? "text-white" : "text-black"}`}
+          className={`${
+            theme === "dark" ? "text-white" : "text-black"
+          } text-[14px] tracking-wider`}
         >
           Chat History
         </Link>

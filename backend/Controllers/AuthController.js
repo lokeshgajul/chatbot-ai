@@ -28,12 +28,12 @@ export const registerUser = async (req, res) => {
       password: hashPassword,
     });
     const newUserEntry = await newUser.save();
-    const token = createToken(newUserEntry._id);
+    // const token = createToken(newUserEntry._id);
 
-    res.cookie("token", token, {
-      withCredentials: true,
-      httpOnly: false,
-    });
+    // res.cookie("token", token, {
+    //   withCredentials: true,
+    //   httpOnly: false,
+    // });
 
     res.status(201).json({
       message: "user created successfully",
@@ -69,13 +69,9 @@ export const loginUser = async (req, res) => {
     }
 
     const token = createToken(user._id);
-    res.cookie("token", token, {
-      withCredentials: true,
-      httpOnly: false,
-    });
     res
       .status(201)
-      .json({ message: "User logged in successfully", success: true });
+      .json({ message: "User logged in successfully", success: true, token });
 
     console.log("Login successfully");
   } catch (error) {

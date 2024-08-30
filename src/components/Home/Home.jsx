@@ -30,7 +30,7 @@ const Index = () => {
                 : "hover:bg-[#2b2b2b] text-white"
             }  hover:shadow-md`}
           >
-            <h3 className="text-[18px] font-medium tracking-wide capitalize">
+            <h3 className="text-[17px] font-medium tracking-wide capitalize">
               Create an image from text
             </h3>
             <p className="mt-1 text-[13.5px]  tracking-wide capitalize">
@@ -46,7 +46,7 @@ const Index = () => {
                 : "hover:bg-[#2b2b2b] text-white"
             } `}
           >
-            <h3 className="text-[18px] font-medium tracking-wide capitalize">
+            <h3 className="text-[17px] font-medium tracking-wide capitalize">
               Question-Answer
             </h3>
             <p className="mt-1 text-[13.5px]  tracking-wide capitalize">
@@ -62,7 +62,7 @@ const Index = () => {
                 : "hover:bg-[#2b2b2b] text-white"
             } `}
           >
-            <h3 className="text-[18px] font-medium tracking-wide capitalize">
+            <h3 className="text-[17px] font-medium tracking-wide capitalize">
               Start Conversation with AI
             </h3>
             <p className="mt-1 text-[13.5px]  tracking-wide capitalize">
@@ -77,7 +77,7 @@ const Index = () => {
                 : "hover:bg-[#2b2b2b] text-white"
             } `}
           >
-            <h3 className="text-[18px] font-medium tracking-wide capitalize">
+            <h3 className="text-[17px] font-medium tracking-wide capitalize">
               Learn Programming with AI
             </h3>
             <p className="mt-1 text-[13.5px]  tracking-wide capitalize">

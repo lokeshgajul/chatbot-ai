@@ -1,6 +1,7 @@
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export const AuthContext = createContext();
 
@@ -9,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
-  const [auth, setAuth] = useState(true);
+  const [token, setAuthToken] = useState(false);
   const baseUrl = "http://localhost:3000";
 
   const handleSuccess = (msg) => {
@@ -32,14 +33,13 @@ export const AuthProvider = ({ children }) => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
 
       const data = response.data;
 
       if (data.response) {
-        console.log("user credentials ", data.response.token);
-        localStorage.setItem("userToken", data.response.token);
         handleSuccess(response.data.message);
       } else {
         console.log("Unexpected response format:", data);
@@ -56,23 +56,48 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.data;
-      if (data.success) {
-        handleSuccess(data.message);
-        setAuth(true);
+      console.log("data.status: ", data.success);
+      if (data.token) {
+        localStorage.setItem("authToken", data.token);
+        setAuthToken(data.token);
+        return true;
       }
     } catch (error) {
-      console.log(error);
+      console.error("Login error:", error);
     } finally {
       setEmail("");
       setPassword("");
     }
   };
+
+  // useEffect(() => {
+  //   const verifyCookie = async () => {
+  //     const { data } = await axios.post("http://localhost:3000/VerifyUser");
+  //     const { status, user } = data;
+  //     setUsername(user);
+
+  //     return status
+  //       ? toast(`Hello ${user}`, {
+  //           position: "top-right",
+  //         })
+  //       : removeCookie("token");
+  //   };
+  //   verifyCookie();
+  // }, [cookies, removeCookie]);
 
   const value = {
     email,
@@ -85,8 +110,9 @@ export const AuthProvider = ({ children }) => {
     setError,
     registerUser,
     loginUser,
-    auth,
     handleSuccess,
+    token,
+    setAuthToken,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
